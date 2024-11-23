@@ -1,0 +1,100 @@
+.news-list-drafts {
+    width: 100%;
+}
+.drafts-item {
+    display: block;
+    text-decoration: none;
+    color: #313131;
+    margin-top: 2vh;
+    padding: 3vw;
+    background: lightgray;
+    border-radius: 10px;
+}
+.drafts-item-container {
+    display: flex;
+    width: 100%;
+}
+.drafts-item-container h2 {
+    margin: 0;
+    width:100%;
+}
+.tfi-icon {
+    text-align: right;
+    margin: 0.5vh;
+    display: block;
+    text-decoration: none;
+    background: #313131;
+    border-radius: 10px;
+    padding: 5px;
+    color: white;
+}
+.create-draft-button {
+    text-align: center;
+    background: gray;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    text-decoration: none;
+}
+.submit-button {
+    padding: 10px;
+    font-weight: 600;
+    color: white;
+    background: #315efb;
+    border: none;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+.submit-button:active {
+    background: blue;
+}
+.draft-img {
+    width: 20vw;
+    border-radius: 10px;
+}
+.main-drafts-container h4 {
+    margin: 0;
+}
+.draft-img-container {
+    position: relative;
+}
+.tfi-draft-icon {
+    text-decoration: none;
+    background: #313131;
+    border-radius: 10px;
+    padding: 5px;
+    color: white;
+}
+.main-drafts-container input {
+    width: 30%;
+    display: block;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 2vh;
+}
+.main-drafts-container input:focus{
+    text-decoration: none;
+    outline-width: 0;
+    border: 0.5px solid #313131;
+    border-bottom: 4px solid #315efb;
+    
+}
+.main-drafts-container label {
+  background: gray;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 20px;
+  box-shadow: 0 3px 10px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  transition: box-shadow ease 0.25s;
+}
+
+.main-drafts-container label:active {
+  box-shadow:none;
+}
+.main-drafts-container input#file {
+  visibility: hidden;
+}

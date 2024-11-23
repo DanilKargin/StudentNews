@@ -1,0 +1,104 @@
+.profile-img {
+    width: 100%;
+    border: 4px solid gray;
+    border-radius: 80px;
+}
+.photo-icon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: lightGray;
+    padding: 8px;
+    border: 3px solid white;
+    border-radius: 18px;
+    color: #313131;
+}
+.profile-img-container {
+    position: relative;
+    width: 10vw;
+}
+.profile-div {
+    padding-top: 3vh;
+    width: 100%;
+    border-top: 2px solid #efefeb;
+}
+.profile-div-block {
+    border-top: 2px solid #efefeb;
+    width: 100%;
+    margin-top: 3vh;
+}
+.profile-div .main-div-block {
+    margin-left: 25vw;
+    margin-right: 25vw;
+}
+.delete-profile-button {
+    text-decoration: none;
+    padding: 10px;
+    font-weight: 600;
+    color: white;
+    background: gray;
+    border-radius: 10px;
+    text-align: center;
+}
+.delete-profile-button:hover {
+    text-decoration: underline;
+}
+.delete-block {
+    margin-top: 5vh;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5vh;
+}
+.input-block {
+    width: 100%;
+    border-bottom: 2px solid #efefeb;
+    padding-top: 3vh;
+    padding-bottom: 1vh;
+}
+.input-block a {
+    width: 100%;
+    display: block;
+    text-decoration: none;
+}
+.input-block a:hover {
+    color: gray;
+}
+.input-block input {
+    width: 100%;
+    display: block;
+    padding: 10px;
+    margin-right: 2vw;
+}
+.input-block input:focus{
+    text-decoration: none;
+    outline-width: 0;
+    border: 0.5px solid #313131;
+    border-bottom: 4px solid #315efb;
+    
+}
+.input-block button {
+    display: block;
+    background: #315efb;
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 10px;
+    text-align: center;
+}
+.input-block-edit {
+    display: inline-flex;
+    width: 100%;
+    margin-top: 1vh;
+}
+@media (max-width: 500px) {
+    .profile-div .main-div-block {
+        margin-right: 3vw;
+        margin-left: 3vw;
+        font-size: 10px;
+    }
+}
+.error-label {
+    color: red;
+    font-size: 10px;
+}
+
