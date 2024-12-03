@@ -1,5 +1,7 @@
 import rect, {Component, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import './css/Login.css'
+import { useAuth } from '../AuthContext';
 
 export const Login = () => {
     const [errorLogin, setErrorLogin] = useState("Строка не может быть пустой");
@@ -8,31 +10,68 @@ export const Login = () => {
     const [errorPassword, setErrorPassword] = useState("Строка не может быть пустой");
     const [visibility_errorPassword, setVisibility_errorPassword] = useState("none");
     
-    const [login, setLogin] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const { login } = useAuth();
     
     const submit_onClick = () => {
-        if(login.length == 0){
+        var flag = true;
+        if(email.length == 0){
             setErrorLogin("Строка не может быть пустой");
             setVisibility_error("block");
+            flag = false;
+        }else{
+            setVisibility_error("none");
         }
         if(password.length == 0){
             setErrorPassword("Строка не может быть пустой");
             setVisibility_errorPassword("block");
+            flag = false;
         }else {
-            setVisibility_error("none");
             setVisibility_errorPassword("none");
         }
+        if(flag){
+            handleLogin();
+        }
     }
+    const handleLogin = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/auth/sign-in', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "email": email, "password": password }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Неверный email или пароль');
+          }
+
+          const data = await response.json();
+          if(data.token.length === 0){
+              setErrorLogin(data.error);
+              setVisibility_error("block");
+              return;
+          }
+          login({ token: data.token, role: data.role });
+          localStorage.setItem('token', data.token);
+          navigate('/profile');
+        } catch (err) {
+          setErrorLogin(err.message);
+        }
+  };
+    
         return(
         <div className="all-login-page">
-            <form className="login-container">
+            <div className="login-container">
                 <h2>Вход</h2>
                 <div className="input-login-block">
                     <div className="input-login-div">
                         <label>Почта:</label>
                         <label style={{display: visibility_error}} className="error-label">*{errorLogin}</label>
-                        <input onChange={event => setLogin(event.target.value)} type="email"/>
+                        <input onChange={event => setEmail(event.target.value)} type="email"/>
                     </div>
                     <div className="input-login-div">
                         <label>Пароль:</label>
@@ -41,11 +80,11 @@ export const Login = () => {
                     </div>
             
                 </div>
-                <button type="submit" onClick={submit_onClick}>Войти</button>
+                <button onClick={submit_onClick}>Войти</button>
                 <div className="bottom-block">
                     <a href="/register">Регистрация</a>
                 </div>
-            </form>
+            </div>
         </div>
     )
 }

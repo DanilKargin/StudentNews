@@ -40,7 +40,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 
 
-        var username = jwtService.extractUserEmail(jwt);
+        var username = jwtService.extractUserName(jwt);
 
         if (StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService

@@ -4,5 +4,6 @@ public enum Role {
     Unknown,
     User,
     Reporter,
-    Redactor
+    Redactor,
+    Not_confirmed
 }

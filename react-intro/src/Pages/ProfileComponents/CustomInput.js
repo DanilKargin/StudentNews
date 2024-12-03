@@ -36,6 +36,8 @@ const CustomInput = ({props}) => {
             setVisibility_input("none");
             setVisibility_a("block");
             setValue(tempValue);
+            props.setData(value);
+            props.onClick();
         }
         
     }
@@ -45,7 +47,7 @@ const CustomInput = ({props}) => {
             <h3>{props.header}</h3>
             <div style={{display: visibility_a }}>
                 <div className="input-block-edit">
-                    <a style={{width:"100%"}} onClick={inputOpenOnClick}>{value}</a>
+                    <a style={{width:"100%"}} onClick={inputOpenOnClick}>{props.text}</a>
                     <a style={{textAlign:"right"}} onClick={inputOpenOnClick}><TfiPencil/></a>
                 </div>
             </div>

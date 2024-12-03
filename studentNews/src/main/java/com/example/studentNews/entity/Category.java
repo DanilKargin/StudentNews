@@ -24,6 +24,4 @@ public class Category {
     public UUID id;
     @Column(name="name", nullable = false)
     public String name;
-    @OneToMany(cascade = CascadeType.DETACH)
-    private List<Article> articles;
 }

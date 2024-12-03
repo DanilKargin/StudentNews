@@ -16,7 +16,7 @@ const Header =() => (
                 <a className="sitename" href="/">
                     <b>Student News</b>
                 </a>
-                <div className="slogan">Все о чем боялись спросить и не только</div>
+                <div className="slogan">Новости...</div>
                 </div>
             </div>
             <div>
