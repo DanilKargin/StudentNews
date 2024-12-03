@@ -1,4 +1,4 @@
-import rect, {Component, useState} from 'react'
+import rect, {Component, useState, useEffect} from 'react'
 import './css/Login.css'
 
 export const Register = () => {
@@ -15,6 +15,31 @@ export const Register = () => {
     const [password, setPassword] = useState("");
     const [confirm_password, setPassword_confirm] = useState("");
     
+    const [visibility_inputs, setVisibility_inputs] = useState("block");
+    const [visibility_result, setVisibility_result] = useState("none");
+    
+    const [result, setResult] = useState("Загрузка...");
+    const [isActiveResend, setIsActiveResend] = useState('none');
+    
+    const [seconds, setSeconds] = useState(60);
+    const [isActiveTimer, setIsActiveTimer] = useState(false);
+    
+    useEffect(() => {
+    let interval = null
+    if (isActiveTimer) {
+      interval = setInterval(() => {
+        setSeconds(seconds => seconds - 1);
+      }, 1000)
+      if(seconds == 0){
+          setIsActiveTimer(false);
+          setIsActiveResend('all');
+      }
+    }else if (!isActiveTimer && seconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval)
+  }, [isActiveTimer, seconds])
+  
     const submit_onClick = () => {
         var flag = true;
         if(!login_regex.test(login)){
@@ -40,6 +65,33 @@ export const Register = () => {
             handleRegister();
         }
     }
+    const resend_emailVerification = async () => {
+        setIsActiveResend('none');
+         setSeconds(60);
+         setIsActiveTimer(true);
+        try {
+          const response = await fetch('http://localhost:8080/auth/resend-token?email=' + login, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('Ошибка отправки письма. Попробуйте позже');
+          }
+
+          const data = await response.json();
+          if(data.content.length === 0){
+              alert(data.error);
+          }else{
+              setResult(data.content);
+          }
+            
+        } catch (err) {
+          alert(err.message);
+        }
+    }
     const handleRegister = async () => {
         try {
           const response = await fetch('http://localhost:8080/auth/sign-up', {
@@ -60,34 +112,45 @@ export const Register = () => {
               setVisibility_error("block");
               return;
           }
-          alert(data.content);
-          //navigate('/profile');
+          setResult(data.content);
+          setVisibility_inputs('none');
+          setVisibility_result('block');
+          setIsActiveTimer(true);
         } catch (err) {
           setErrorLogin(err.message);
         }
   };
+    
         return(
         <div className="all-login-page">
             <div className="login-container">
                 <h2>Регистрация</h2>
-                <div className="input-login-block">
-                    <div className="input-login-div">
-                        <label>Почта:</label>
-                        <label style={{display: visibility_error}} className="error-label">*{errorLogin}</label>
-                        <input onChange={event => setLogin(event.target.value)} type="email"/>
+                <div style={{display: visibility_inputs}}>
+                    <div className="input-login-block">
+                        <div className="input-login-div">
+                            <label>Почта:</label>
+                            <label style={{display: visibility_error}} className="error-label">*{errorLogin}</label>
+                            <input onChange={event => setLogin(event.target.value)} type="email"/>
+                        </div>
+                        <div className="input-login-div">
+                            <label>Пароль:</label>
+                            <label style={{display: visibility_errorPassword}} className="error-label">*{errorPassword}</label>
+                            <input onChange={event => setPassword(event.target.value)} type="password"/>
+                        </div>
+                        <div className="input-login-div">
+                            <label>Повторите пароль:</label>
+                            <input onChange={event => setPassword_confirm(event.target.value)} type="password"/>
+                        </div>
+
                     </div>
-                    <div className="input-login-div">
-                        <label>Пароль:</label>
-                        <label style={{display: visibility_errorPassword}} className="error-label">*{errorPassword}</label>
-                        <input onChange={event => setPassword(event.target.value)} type="password"/>
-                    </div>
-                    <div className="input-login-div">
-                        <label>Повторите пароль:</label>
-                        <input onChange={event => setPassword_confirm(event.target.value)} type="password"/>
-                    </div>
-            
+                    <button onClick={submit_onClick}>Зарегистрироваться</button>
                 </div>
-                <button onClick={submit_onClick}>Зарегистрироваться</button>
+                <div style={{display: visibility_result}}>
+                    <h3>{result}</h3>
+                    <a href='#' onClick={resend_emailVerification}
+                    style={{pointerEvents: isActiveResend}}>Отправить сообщение повторно</a>
+                    <div>через {seconds}</div>
+                </div>
                 <div className="bottom-block">
                     <a href="/login">Войти</a>
                 </div>
