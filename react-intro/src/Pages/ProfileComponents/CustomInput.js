@@ -35,9 +35,7 @@ const CustomInput = ({props}) => {
         }else{
             setVisibility_input("none");
             setVisibility_a("block");
-            setValue(tempValue);
-            props.setData(value);
-            props.onClick();
+            props.setData(tempValue);
         }
         
     }

@@ -13,7 +13,6 @@ import {Draft} from './Pages/Draft.js'
 import PrivateRoute from './PrivateRoute';
 
 function App() {
-
   return (
     <Router>
     <div className="App">

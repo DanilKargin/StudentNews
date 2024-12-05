@@ -16,6 +16,7 @@ const PasswordInput = ({props}) => {
     const inputOpenOnClick = () => {
         setTempValue("");
         setTempValue2("");
+        setValue("");
         setVisibility_error("none");
         setVisibility_input("block");
         setVisibility_a("none");
@@ -34,7 +35,7 @@ const PasswordInput = ({props}) => {
         }else{
             setVisibility_input("none");
             setVisibility_a("block");
-            setValue(tempValue);
+            props.setData(tempValue);
         }
     }
     
@@ -43,7 +44,7 @@ const PasswordInput = ({props}) => {
             <h3>{props.header}</h3>
             <div style={{display: visibility_a }}>
                 <div className="input-block-edit">
-                    <a style={{width:"100%"}} onClick={inputOpenOnClick}>{'*'.repeat(value.length)}</a>
+                    <a style={{width:"100%"}} onClick={inputOpenOnClick}>{props.text}</a>
                     <a style={{textAlign:"right"}} onClick={inputOpenOnClick}><TfiPencil/></a>
                 </div>
             </div>
