@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,7 +48,11 @@ public class UserService {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByUsername(username);
     }
-    public void deleteUser(User user){
+    public void deleteUser(){
+        var user = getCurrentUser();
+        userRepository.delete(user);
+    }
+    public void deleteUserByUser(User user){
         userRepository.delete(user);
     }
     public Optional<User> verifyEmail(String token) {

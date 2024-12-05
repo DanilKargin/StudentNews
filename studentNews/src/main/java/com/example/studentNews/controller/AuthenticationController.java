@@ -41,14 +41,12 @@ public class AuthenticationController {
         }
     }
     @PostMapping("/resend-token")
-    public ResponseEntity<String> resendToken(@RequestParam("email") String email) {
+    public ResponseEntity<SignUpResponse> resendToken(@RequestParam("email") String email) {
         Optional<User> userOpt = userService.findByEmail(email);
         if (userOpt.isPresent() && userOpt.get().getRole() == Role.Not_confirmed) {
             User user = userOpt.get();
-
             return ResponseEntity.ok(authenticationService.regenerateToken(user));
-        } else {
-            return ResponseEntity.badRequest().body("Пользователь не найден или уже подтвержден.");
-        }
+        }else return ResponseEntity.ok(new SignUpResponse("", "Пользователь не найден или уже подтвержден"));
+
     }
 }

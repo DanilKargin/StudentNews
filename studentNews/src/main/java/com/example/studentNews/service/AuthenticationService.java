@@ -1,12 +1,9 @@
 package com.example.studentNews.service;
 
 import com.example.studentNews.Role;
-import com.example.studentNews.controller.domain.SignInRequest;
-import com.example.studentNews.controller.domain.SignUpResponse;
+import com.example.studentNews.controller.domain.*;
 import com.example.studentNews.dto.UserDto;
 import com.example.studentNews.entity.User;
-import com.example.studentNews.controller.domain.SignUpRequest;
-import com.example.studentNews.controller.domain.TokenResponse;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +31,7 @@ public class AuthenticationService {
         try {
             var checkUser = userService.findByEmail(request.getEmail());
             if(checkUser.isPresent() && checkUser.get().getRole() == Role.Not_confirmed){
-                userService.deleteUser(checkUser.get());
+                userService.deleteUserByUser(checkUser.get());
             }
             var user = User.builder()
                     .email(request.getEmail())
@@ -54,7 +51,19 @@ public class AuthenticationService {
             return new SignUpResponse("",e.getMessage());
         }
     }
-
+    public UserDto edit(byte[] image, String fio, String password){
+        var user = userService.getCurrentUser();
+        if(!fio.isEmpty()){
+            user.setFio(fio);
+        }
+        if(!password.isEmpty()){
+            user.setPassword(passwordEncoder.encode(password));
+        }
+        if(image != null){
+            user.setImage(image);
+        }
+        return new UserDto(userService.save(user));
+    }
     public TokenResponse signIn(SignInRequest request) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -74,14 +83,14 @@ public class AuthenticationService {
             return new TokenResponse("", "", e.getMessage());
         }
     }
-    public String regenerateToken(User user){
+    public SignUpResponse regenerateToken(User user){
         try {
             generateVerificationToken(user);
             userService.save(user);
             sendVerificationEmail(user);
-            return "Письмо с подтверждением регистрации отправлено на почту";
+            return new SignUpResponse("Письмо с подтверждением регистрации отправлено на почту", "");
         }catch (Exception e){
-            return e.getMessage();
+            return new SignUpResponse("",e.getMessage());
         }
     }
 
