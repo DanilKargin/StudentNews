@@ -2,9 +2,12 @@ import React from 'react'
 import './App.css';
 import logo from './Logo.webp';
 import profile_button from './Profile_button.png';
-import {TfiWrite, TfiUser} from 'react-icons/tfi'
+import {TfiCrown, TfiWrite, TfiUser} from 'react-icons/tfi'
+import { useAuth } from './AuthContext';
 
-const Header =() => (
+const Header =() => {
+    const { user } = useAuth();
+    return(
     <header className="App-header">
       <div className="main-div-block">
         <div className="inner">
@@ -20,9 +23,16 @@ const Header =() => (
                 </div>
             </div>
             <div>
-                <a href="/drafts">
-                 <TfiWrite className="header-button-icon"/>
-                </a>
+                {user !== null && user.role === 'Redactor' &&
+                    <a href="/redactor">
+                     <TfiCrown className="header-button-icon"/>
+                    </a>
+                }
+                {user !== null && user.role === 'Reporter' &&
+                    <a href="/drafts">
+                     <TfiWrite className="header-button-icon"/>
+                    </a>
+                }  
                 <a href="/profile">
                  <TfiUser className="header-button-icon"/>
                 </a>
@@ -31,4 +41,5 @@ const Header =() => (
       </div>   
       </header>
 );
+}
 export default Header;

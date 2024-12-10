@@ -166,7 +166,6 @@ nav a:hover{
 }
 .help-panel {
     width: 100%;
-    text-align: right;
 }
 .help-panel p {
     font-size: 20px;
@@ -184,6 +183,10 @@ nav a:hover{
     top: 0;
     right: 0;
     margin: 10px;
+}
+.search-button {
+    background: transparent;
+    border: none;
 }
 .catalog-name {
     width: 100%;

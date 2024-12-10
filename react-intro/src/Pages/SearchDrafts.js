@@ -5,20 +5,16 @@ import {useState, useEffect} from 'react'
 import { useAuth } from '../AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export const Drafts = () => {
+export const SearchDrafts = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     const { login } = useAuth();
     let { name } = useParams();
     
     const [draftList, setDraftList] = useState([]);
-    const fetchData = async (search) => {
+    const fetchData = async () => {
             try{
-            let link = 'http://localhost:8080/article/reporter/drafts';
-            if(search !== undefined){
-                link += "/search?s=" + search;
-            }
-            const response = await fetch(link, {
+            const response = await fetch('http://localhost:8080/article/reporter/drafts', {
                   method: 'GET',
                   headers: {
                     'Content-Type': 'application/json',
@@ -40,9 +36,11 @@ export const Drafts = () => {
                     alert(error.message);
             }
         };
-                    
     const fetchDeleteItem = async (_id) => {
             try{
+            const requestData = {
+                        id: _id
+                    }
             const response = await fetch('http://localhost:8080/article/reporter/draft?id=' + _id, {
                   method: 'DELETE',
                   headers: {
@@ -70,37 +68,8 @@ export const Drafts = () => {
                     alert(error.message);
             }
         };
-        const fetchChangeStatusItem = async (_id) => {
-            try{
-            const response = await fetch('http://localhost:8080/article/reporter/draft/change-ready?id=' + _id, {
-                  method: 'PUT',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.token}`,
-                  },
-                });
-                if(response.status === 401 || response.status === 403){
-                    login(null);
-                    navigate('/login');
-                    return;
-                }
-                var result = await response.json();
-                if(result.content.length !== 0){
-                        alert(result.content);
-                    }else{
-                        alert(result.error);
-                    }
-                window.location.reload();
-            }catch(error){
-                if (error.response?.status === 401 ) {
-                    login(null);
-                    navigate('/login');
-                  }
-                    alert(error.message);
-            }
-        };
         useEffect(() => {
-            fetchData(name);
+            fetchData();
         }, []);
     
     return(
@@ -117,17 +86,16 @@ export const Drafts = () => {
                             <DraftsItem props={{
                                         id: item.id,
                                         name: item.name,
-                                        link: /draft/ + item.id,
-                                        delete_click: fetchDeleteItem,
-                                        ready_click: fetchChangeStatusItem
+                                        link: /drafts/ + item.id,
+                                        delete_click: fetchDeleteItem
                                 }}/>
                             ))
                         }
                     </div>
                     <div className="help-panel">
-                        <SearchInput props={{ link: "/drafts/"}}/>
+                        <SearchInput props={{link: "/drafts/" + name}}/>
                         <div className="">
-                            <a href="/draft/new"className="create-draft-button">Создать статью</a>
+                            <a href="/drafts/new"className="create-draft-button">Создать статью</a>
                         </div>
                     </div>
                 </div>

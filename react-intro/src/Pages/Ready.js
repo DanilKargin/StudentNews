@@ -3,8 +3,9 @@ import {Editor} from '@tinymce/tinymce-react';
 import {TfiPencil} from 'react-icons/tfi'
 import { useAuth } from '../AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import './css/NewsList.css'
 
-export const Draft = () => {
+export const Ready = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     const { login } = useAuth(); 
@@ -19,6 +20,8 @@ export const Draft = () => {
     const [category, setCategory] = useState('');
     const [content, setContent] = useState('');
     const [a_id, setA_id] = useState('');
+    const [authorName, setAuthorName] = useState('');
+    const [authorImg, setAuthorImg] = useState('');
     
     const fetchDataCategory = async () => {
             try{
@@ -36,7 +39,7 @@ export const Draft = () => {
         };
     const fetchDataLoad = async (draft_id, draft_category) => {
             try{
-            const response = await fetch('http://localhost:8080/article/reporter/draft?id=' + draft_id, {
+            const response = await fetch('http://localhost:8080/article/ready-get?id=' + draft_id, {
                   method: 'GET',
                   headers: {
                     'Content-Type': 'application/json',
@@ -54,6 +57,44 @@ export const Draft = () => {
                 setCategory(result.category);
                 setContent(result.content);
                 setA_id(result.id);
+                setAuthorName(result.userName); setAuthorImg(`data:image/png;base64,${result.userImage}`)
+            }catch(error){
+                if (error.response?.status === 401 ) {
+                    login(null);
+                    navigate('/login');
+                  }
+                    alert(error.message);
+            }
+        };
+    const fetchSendToPublication = async (_id, _name, _img, _content, _category) => {
+            try{
+            const requestData = {
+                        id: _id,
+                        image: _img,
+                        name: _name,
+                        category: _category,
+                        content: _content
+                    };
+            const response = await fetch('http://localhost:8080/article/ready/save-publish', {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`,
+                  },
+                    body: JSON.stringify(requestData),
+                });
+                if(response.status === 401 || response.status === 403){
+                    login(null);
+                    navigate('/login');
+                    return;
+                }
+                var result = await response.json();
+                if(result.content.length !== 0){
+                        alert(result.content);
+                    }else{
+                        alert(result.error);
+                    }
+                window.location.reload();
             }catch(error){
                 if (error.response?.status === 401 ) {
                     login(null);
@@ -64,9 +105,7 @@ export const Draft = () => {
         };
      useEffect(() => {
          fetchDataCategory();
-         if(id !== "new"){
-             fetchDataLoad(id);
-         }
+         fetchDataLoad(id);
      },[]);
    const onChangePhoto = (event) => {
                const file = event.target.files[0]; // Получаем первый выбранный файл
@@ -89,49 +128,9 @@ export const Draft = () => {
                 }
             }
    const save_onClick = () => {
-        if(category === ''){
-            setCategory(catalogs[0].name);            
-        }
-       fetchDataEdit(a_id, photoByte, name, editorRef.current.getContent(), category);
-       navigate('/drafts')
+       fetchSendToPublication(a_id, name, photoByte, editorRef.current.getContent(), category);
+       navigate('/redactor')
    }
-   const fetchDataEdit = async (_id, _img, _name, _content, _category) => {
-                try{
-                    const requestData = {
-                        id: _id,
-                        image: _img,
-                        name: _name,
-                        category: _category,
-                        content: _content
-                    }
-                    const response = await fetch('http://localhost:8080/article/draft/save', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${user.token}`,
-                      },
-                        body: JSON.stringify(requestData),
-                    });
-                    if(response.status === 401){
-                        login(null);
-                        navigate('/login');
-                        return;
-                    }
-                    var result = await response.json()
-                    if(result.content.length !== 0){
-                        alert(result.content);
-                    }else{
-                        alert(result.error);
-                    }
-                    
-                }catch(error){
-                    if (error.response?.status === 401) {
-                        login(null);
-                        navigate('/login');
-                      }
-                    alert(error.message);
-                }
-            };
     return(
         <div className="main-drafts-container">
             <div className="main-div-block"> 
@@ -152,6 +151,11 @@ export const Draft = () => {
                     <option value={item.name}>{item.name}</option>
                    ))}
                 </select>
+                <h4>Автор:</h4>
+                <div className="author-box">
+                        <img className="author-img" src={authorImg}/>
+                        <div className="author-text">{authorName}</div>
+                    </div>
                 <Editor apiKey='350iwossgka6gpjd93uvechmucp9qka4p7tqv7ei79ikffa8'
                     onInit={ (evt, editor) => editorRef.current = editor}
                     initialValue={content}
@@ -159,7 +163,7 @@ export const Draft = () => {
                           menubar: false,
                          }}
                 />
-                <button onClick={save_onClick} className="submit-button" type="submit">Сохранить</button>
+                <button onClick={save_onClick} className="submit-button" type="submit">Отправить на публикацию</button>
             </div>
         </div>
     )

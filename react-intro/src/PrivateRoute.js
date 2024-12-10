@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 const PrivateRoute = ({ children, roles }) => {
+  
   const { user } = useAuth();
   if (!user) {
     // Пользователь не авторизован

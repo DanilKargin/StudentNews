@@ -1,6 +1,7 @@
 .main-container {
     height: auto;
     width: auto;
+    height: 500px;
     display: flex;
     align-items: center;
     position: relative;

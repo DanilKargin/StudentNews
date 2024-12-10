@@ -49,7 +49,6 @@ export const Profile = () => {
             }
         };
         const onChangePhoto = (event) => {
-                    //ЗАКОНЧИТЬ
                const file = event.target.files[0]; // Получаем первый выбранный файл
                 if (file) {
                     const reader = new FileReader();
@@ -92,14 +91,13 @@ export const Profile = () => {
         }
         const fetchDataEdit = async (img, name, pass) => {
                 try{
-                    console.log(fio);
                     const requestData = {
                         image: img,
                         fio: name,
                         password: pass
                     }
                     const response = await fetch('http://localhost:8080/user/edit', {
-                      method: 'POST',
+                      method: 'PUT',
                       headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${user.token}`,

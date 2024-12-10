@@ -1,9 +1,13 @@
 .news-img {
     display: block;
     width: 100%;
+    heighT: 200px;
 }
-.news-item {
-    
+.news-img-read {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 400px;
 }
 .news-item-date {
     color: #313131;
@@ -43,6 +47,8 @@
     padding: 10px;
     text-align: center;
     border-radius: 15px;
+    margin-left: auto;
+    margin-right: 0px;
 }
 .comments-icon {
     display: block;
@@ -50,4 +56,61 @@
     width: 3vw;
     height: 3vh;
     color: #313131;
+}
+.author-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: 2px solid gray;
+    margin-right: 10px;
+}
+.author-box {
+    display: flex;
+}
+.author-text {
+    margin-bottom: auto;
+    margin-top: auto;
+}
+.commentsBlock {
+    display: none;
+    border-top: 2px solid #efefeb;
+    width: 100%;
+}
+.commentsBlock:target {
+    opacity: 1; /* делаем окно видимым */
+	  pointer-events: auto; /* элемент видим для событий мыши */
+    overflow-y: auto;
+}
+.comment-item {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    background-color: #efefeb;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 2vh;
+}
+.input-comments-block {
+    width: 100%;
+    margin-top: 2vh;
+}
+.input-comments-block input {
+    display: block;
+    width: 100%;
+    text-align: ;
+    height: 100px;
+    padding: 0.5vw;
+    box-sizing: border-box;
+}
+.input-comments-block button {
+    display: block;
+    background: #315efb;
+    color: white;
+    font-weight: 600;
+    border: none;
+    margin-top: 1vh;
+    padding: 10px;
+    text-align: center;
+}
+.input-comments-block h4 {
+    margin: 0;
 }
