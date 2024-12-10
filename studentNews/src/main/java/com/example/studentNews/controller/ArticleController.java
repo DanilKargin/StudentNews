@@ -31,7 +31,7 @@ public class ArticleController {
     }
     @GetMapping("/publication")
     public ResponseEntity<ArticleDto> getPublishById(@RequestParam("id") UUID id){
-        return ResponseEntity.ok(articleService.getArticleById(id));
+        return ResponseEntity.ok(new ArticleDto(articleService.getArticleById(id)));
     }
     @GetMapping("/reporter/drafts")
     public ResponseEntity<List<ArticleDto>> getReporterDraftList(){

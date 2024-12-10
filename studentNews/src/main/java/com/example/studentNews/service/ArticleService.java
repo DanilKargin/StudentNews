@@ -49,10 +49,10 @@ public class ArticleService {
     public List<ArticleDto> getReadyList(){
         return articleRepository.getListByStatus(ArticleStatus.Ready).stream().map(ArticleDto::new).collect(Collectors.toList());
     }
-    public ArticleDto getArticleById(UUID id) {
+    public Article getArticleById(UUID id) {
         var article = articleRepository.getArticleByIdAndStatus(id, ArticleStatus.Posting);
         if (article.isPresent()) {
-            return new ArticleDto(article.get());
+            return article.get();
         } else {
             return null;
         }
