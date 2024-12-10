@@ -3,10 +3,7 @@ package com.example.studentNews.entity;
 import com.example.studentNews.ArticleStatus;
 import com.example.studentNews.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +15,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Table(name="articles")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Article {
@@ -44,6 +42,4 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     public Category category;
-    @OneToMany(cascade = CascadeType.DETACH)
-    private List<Comment> comments;
 }

@@ -51,6 +51,11 @@ public class SecurityConfiguration {
                 }))
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/article/publications", "/article/publication", "/article/publications/name", "/article/publications/category").permitAll()
+                        .requestMatchers("/article/reporter/drafts", "/article/reporter/draft", "/article/draft/save", "/reporter/draft/change-ready").hasAuthority("Reporter")
+                        .requestMatchers("/article/ready", "/article/ready/search", "/article/ready/save-publish", "/article/ready-get", "/article/ready/reject").hasAuthority("Redactor")
+                        .requestMatchers("/category/list").permitAll()
+                        .requestMatchers("/category/delete", "/category/create").hasAuthority("Redactor")
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

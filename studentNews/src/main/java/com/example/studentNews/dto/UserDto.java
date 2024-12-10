@@ -19,7 +19,6 @@ public class UserDto {
     public UUID id;
     public String fio;
     public String email;
-    public String password;
     public byte[] image;
     public Role role;
 
@@ -27,7 +26,6 @@ public class UserDto {
         this.id = user.getId();
         this.fio = user.getFio();
         this.email = user.getEmail();
-        this.password = user.getPassword();
         this.image = user.getImage();
         this.role = user.getRole();
     }

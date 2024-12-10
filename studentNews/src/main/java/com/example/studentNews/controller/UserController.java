@@ -22,7 +22,7 @@ public class UserController {
     {
         return new UserDto(userService.getCurrentUser());
     }
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     public UserDto edit(@RequestBody UserRequest request){
         byte[] byteArray;
         if(request.getImage() != null) {
